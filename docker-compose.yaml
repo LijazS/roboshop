@@ -35,6 +35,8 @@ services:
     container_name: web
     ports:
     - "80:80"
+    networks:
+    - roboshop
     depends_on:
     - catalogue
     - user
@@ -44,53 +46,73 @@ services:
   mongodb:
     image: muralisocial123/mongodb:v1
     container_name: mongodb
+    networks:
+    - roboshop
     volumes:
     - mongodb:/data/db
   catalogue:
     image: muralisocial123/catalogue:v1
     container_name: catalogue
+    networks:
+    - roboshop
     depends_on:
     - mongodb
   redis:
     image: redis
     container_name: redis
+    networks:
+    - roboshop
     volumes:
     - redis:/data
   user:
     image: muralisocial123/user:v1
     container_name: user
+    networks:
+    - roboshop
     depends_on:
     - mongodb
     - redis
   cart:
     image: muralisocial123/cart:v1
     container_name: cart
+    networks:
+    - roboshop
     depends_on:
     - redis
     - catalogue
   mysql:
     image: muralisocial123/mysql:v1
     container_name: mysql
+    networks:
+    - roboshop
     volumes:
     - mysql:/var/lib/mysql
   shipping:
     image: muralisocial123/shipping:v1
     container_name: shipping
+    networks:
+    - roboshop
     depends_on:
     - mysql
   rabbitmq:
     image: rabbitmq
     container_name: rabbitmq
+    networks:
+    - roboshop
     volumes:
     - rabbitmq:/var/lib/rabbitmq
   payment:
     image: muralisocial123/payment:v1
     container_name: payment
+    networks:
+    - roboshop
     depends_on:
     - rabbitmq
   ratings:
     image: muralisocial123/ratings:v1
     container_name: ratings
+    networks:
+    - roboshop
     depends_on:
     - mysql
 
